@@ -3,10 +3,10 @@ from models import db, CellRecord
 from utils.auth_utils import verify_admin_token
 from datetime import datetime, timedelta
 
-# ✅ Define the blueprint for Admin Routes
+# Define the blueprint for Admin Routes
 admin_routes = Blueprint("admin_routes", __name__)
 
-# ✅ Get operator usage summary (Admin - global)
+# Get operator usage summary (Admin - global)
 @admin_routes.route('/admin/operator_summary', methods=['GET'])
 def operator_summary():
     verify_admin_token()
@@ -34,14 +34,14 @@ def operator_summary():
 
     return jsonify(stats)
 
-# ✅ Count of distinct connected devices (by unique device_id)
+# Count of distinct connected devices (by unique device_id)
 @admin_routes.route('/admin/connected_devices_count', methods=['GET'])
 def connected_devices_count():
     verify_admin_token()
     count = db.session.query(CellRecord.device_id).distinct().count()
     return jsonify({"connected_devices": count})
 
-# ✅ Previously connected devices — show username, device_id, IP, MAC
+# Previously connected devices — show username, device_id, IP, MAC
 @admin_routes.route('/admin/previously_connected_devices', methods=['GET'])
 def previously_connected_devices():
     verify_admin_token()
@@ -61,7 +61,7 @@ def previously_connected_devices():
         } for d in devices
     ])
 
-# ✅ Network type usage summary (global)
+#  Network type usage summary (global)
 @admin_routes.route('/admin/network_type_summary', methods=['GET'])
 def admin_network_type_summary():
     verify_admin_token()
@@ -88,7 +88,7 @@ def admin_network_type_summary():
 
     return jsonify(stats)
 
-# ✅ Average signal power summary (global)
+# Average signal power summary (global)
 @admin_routes.route('/admin/signal_power_summary', methods=['GET'])
 def admin_signal_power_summary():
     verify_admin_token()
@@ -111,7 +111,7 @@ def admin_signal_power_summary():
     avg_stats = {nt: (sum(stats[nt]) / len(stats[nt]) if nt in stats else 0.0) for nt in network_types}
     return jsonify(avg_stats)
 
-# ✅ SINR summary (global)
+#  SINR summary (global)
 @admin_routes.route('/admin/sinr_summary', methods=['GET'])
 def admin_sinr_summary():
     verify_admin_token()
@@ -134,7 +134,7 @@ def admin_sinr_summary():
     avg_stats = {nt: (sum(stats[nt]) / len(stats[nt]) if nt in stats else 0.0) for nt in network_types}
     return jsonify(avg_stats)
 
-# ✅ Device activity trend (global) with interval support
+#  Device activity trend (global) with interval support
 @admin_routes.route('/admin/device_activity_trend', methods=['GET'])
 def device_activity_trend():
     verify_admin_token()
@@ -168,7 +168,7 @@ def device_activity_trend():
     })
 
 
-# ✅ Device statistics by username & device_id
+#  Device statistics by username & device_id
 @admin_routes.route('/admin/device_statistics', methods=['GET'])
 def device_statistics():
     verify_admin_token()
@@ -198,7 +198,7 @@ def device_statistics():
         "last_seen": last_seen.isoformat()
     })
 
-# ✅ Currently connected devices (show username, device_id, IP, MAC)
+#  Currently connected devices (show username, device_id, IP, MAC)
 @admin_routes.route('/admin/currently_connected_devices', methods=['GET'])
 def currently_connected_devices():
     verify_admin_token()
