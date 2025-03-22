@@ -3,10 +3,10 @@ from models import db, CellRecord
 from datetime import datetime
 from utils.auth_utils import verify_token
 
-# ✅ Define the blueprint for Android App Routes
+#  Define the blueprint for Android App Routes
 app_routes = Blueprint("app_routes", __name__)
 
-# ✅ Submit network data (Android sends data every 10 seconds)
+#  Submit network data (Android sends data every 10 seconds)
 @app_routes.route('/submit_data', methods=['POST'])
 def submit_data():
     user = verify_token()  # Ensure authenticated request
@@ -36,7 +36,7 @@ def submit_data():
         return jsonify({"error": str(e)}), 500
 
 
-# ✅ Get average connectivity time per operator (by username & device_id)
+#  Get average connectivity time per operator (by username & device_id)
 @app_routes.route('/stats/operator', methods=['GET'])
 def operator_stats():
     user = verify_token()
@@ -69,7 +69,7 @@ def operator_stats():
     return jsonify(stats)
 
 
-# ✅ Get average connectivity time per network type (by username & device_id)
+#  Get average connectivity time per network type (by username & device_id)
 @app_routes.route('/stats/network_type', methods=['GET'])
 def network_type_stats():
     user = verify_token()
@@ -102,7 +102,7 @@ def network_type_stats():
     return jsonify(stats)
 
 
-# ✅ Get average signal power per network type (by username & device_id)
+#  Get average signal power per network type (by username & device_id)
 @app_routes.route('/stats/signal_power_per_network', methods=['GET'])
 def signal_power_per_network():
     user = verify_token()
@@ -131,7 +131,7 @@ def signal_power_per_network():
     return jsonify(avg_stats)
 
 
-# ✅ Get average signal power per device (by username & device_id)
+#  Get average signal power per device (by username & device_id)
 @app_routes.route('/stats/signal_power_per_device', methods=['GET'])
 def signal_power_per_device():
     user = verify_token()
@@ -160,7 +160,7 @@ def signal_power_per_device():
     })
 
 
-# ✅ Get average SINR per network type (by username & device_id)
+#  Get average SINR per network type (by username & device_id)
 @app_routes.route('/stats/sinr_per_network', methods=['GET'])
 def sinr_per_network():
     user = verify_token()

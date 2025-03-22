@@ -19,23 +19,23 @@ load_dotenv()
 
 SECRET_KEY = os.getenv('SECRET_KEY')
 
-# ✅ Initialize Flask app
+# Initialize Flask app
 app = Flask(__name__)
 CORS(app)
 bcrypt = Bcrypt(app)
 
-# ✅ Database Config
+#  Database Config
 app.config['SQLALCHEMY_DATABASE_URI'] = DB_CONFIG
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SECRET_KEY'] = SECRET_KEY
 
-# ✅ Initialize SQLAlchemy & Limiter
+# Initialize SQLAlchemy & Limiter
 
 db.init_app(app)
 limiter = Limiter(key_func=get_remote_address)
 limiter.init_app(app)
 
-# ✅ Register app routes
+# Register app routes
 app.register_blueprint(app_routes)
 app.register_blueprint(admin_routes)
 
@@ -103,12 +103,12 @@ def admin_login():
 
 
 
-# ✅ Health Check Route
+# Health Check Route
 @app.route('/')
 def home():
-    return "✅ Network Cell Analyzer Backend is running!"
+    return " Network Cell Analyzer Backend is running!"
 
 
-# ✅ Run app
+# Run app
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='0.0.0.0', port=int(os.environ.get('PORT', 5000)))
