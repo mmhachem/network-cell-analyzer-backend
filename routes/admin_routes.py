@@ -134,12 +134,13 @@ def admin_sinr_summary():
     avg_stats = {nt: (sum(stats[nt]) / len(stats[nt]) if nt in stats else 0.0) for nt in network_types}
     return jsonify(avg_stats)
 
-# ✅ Device activity trend (global)
+# ✅ Device activity trend (global) with interval support
 @admin_routes.route('/admin/device_activity_trend', methods=['GET'])
 def device_activity_trend():
     verify_admin_token()
     start_date = request.args.get('start_date')
     end_date = request.args.get('end_date')
+    interval = request.args.get('interval', 'hour')  # default to hour
 
     if not start_date or not end_date:
         return jsonify({"error": "Start and end dates required"}), 400
@@ -151,7 +152,11 @@ def device_activity_trend():
     trend = {}
 
     for rec in records:
-        time_slot = rec.timestamp.strftime('%Y-%m-%d %H:00')
+        if interval == 'minute':
+            time_slot = rec.timestamp.strftime('%Y-%m-%d %H:%M')
+        else:  # default hour
+            time_slot = rec.timestamp.strftime('%Y-%m-%d %H:00')
+
         trend[time_slot] = trend.get(time_slot, 0) + 1
 
     timestamps = sorted(trend.keys())
@@ -161,6 +166,7 @@ def device_activity_trend():
         "timestamps": timestamps,
         "counts": counts
     })
+
 
 # ✅ Device statistics by username & device_id
 @admin_routes.route('/admin/device_statistics', methods=['GET'])
